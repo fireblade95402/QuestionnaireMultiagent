@@ -32,6 +32,10 @@ namespace QuestionnaireMultiagent
         {
             if (e.Key == Key.Enter)
             {
+                // update question from binding
+                BindingExpression binding = QuestionBox.GetBindingExpression(TextBox.TextProperty);
+                binding.UpdateSource();
+                
                 AskButton_Click(sender, e);
             }
         }
