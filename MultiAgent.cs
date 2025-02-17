@@ -28,6 +28,7 @@ namespace QuestionnaireMultiagent
     {
         MainWindow? mainWindow;
 
+
         string? DEPLOYMENT_NAME = Environment.GetEnvironmentVariable("AZURE_OPENAI_MODEL_DEPLOYMENT");
         string? ENDPOINT = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
         string? API_KEY = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
@@ -47,7 +48,7 @@ namespace QuestionnaireMultiagent
             }
         }
 
-        private string _Context = "Microsoft Azure AI";
+        private string _Context = "Azure API Management";
         public string Context
         {
             get { return _Context; }
@@ -69,7 +70,7 @@ namespace QuestionnaireMultiagent
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private string _Question = "Does your service offer video generative AI?";
+        private string _Question = "What are the GenAI Gateway featured in APIM?";
         public string Question
         {
             get { return _Question; }
@@ -209,19 +210,20 @@ namespace QuestionnaireMultiagent
                 Do not address the user as 'you' - make all responses solely in the third person.
                 If you do not find information on a topic, you simply respond that there is no information available on that topic.
                 You will emit an answer that is no greater than {CharacterLimit} characters in length.
+                Keep the answer targeting Azure Solution Architects and Azure Administrators.
             """;
 
             AnswerCheckerPrompt = $"""
-                You are an answer checker for {Context}. Your responses always start with either the words ANSWER CORRECT or ANSWER INCORRECT.
+                You are an answer checker for {Context}. Your responses always starts with either the words "ANSWER CORRECT" or "ANSWER INCORRECT".
                 Given a question and an answer, you check the answer for accuracy regarding {Context},
-                using public web sources when necessary. If everything in the answer is true, you verify the answer by responding "ANSWER CORRECT." with no further explanation.
+                using public web sources when necessary. If everything in the answer is "true", you verify the answer by responding "ANSWER CORRECT." with no further explanation.
                 You also ensure that the answer is no greater than {CharacterLimit} characters in length.
                 Otherwise, you respond "ANSWER INCORRECT - " and add the portion that is incorrect.
                 You do not output anything other than "ANSWER CORRECT" or "ANSWER INCORRECT - <portion>".
             """;
 
             LinkCheckerPrompt = """
-                You are a link checker. Your responses always start with either the words LINKS CORRECT or LINK INCORRECT.
+                You are a link checker. Your responses always start with either the words "LINKS CORRECT" or "LINK INCORRECT".
                 Given a question and an answer that contains links, you verify that the links are working,
                 using public web sources when necessary. If all links are working, you verify the answer by responding "LINKS CORRECT" with no further explanation.
                 Otherwise, for each bad link, you respond "LINK INCORRECT - " and add the link that is incorrect.
